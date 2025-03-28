@@ -29,12 +29,12 @@
 #include "tx_trace.h"
 #include "tx_thread.h"
 #include "tx_initialize.h"
-
+#include "SEGGER_SYSVIEW.h"
 
 /**************************************************************************/
 /*                                                                        */
 /*  FUNCTION                                               RELEASE        */
-/*                                                                        */
+/*                                              rm                           */
 /*    _tx_thread_create                                   PORTABLE C      */
 /*                                                           6.1.8        */
 /*  AUTHOR                                                                */
@@ -255,6 +255,7 @@ ALIGN_TYPE              updated_stack_start;
 
     /* If trace is enabled, insert this event into the trace buffer.  */
     TX_TRACE_IN_LINE_INSERT(TX_TRACE_THREAD_CREATE, thread_ptr, priority, TX_POINTER_TO_ULONG_CONVERT(stack_start), stack_size, TX_TRACE_THREAD_EVENTS)
+    SEGGER_SYSVIEW_OnTaskCreate(thread_ptr->tx_thread_id);
 
     /* Register thread in the thread array structure.  */
     TX_EL_THREAD_REGISTER(thread_ptr)
@@ -373,4 +374,3 @@ ALIGN_TYPE              updated_stack_start;
     /* Always return a success.  */
     return(TX_SUCCESS);
 }
-
